@@ -1,32 +1,29 @@
 import {
-  frontend,
   backend,
-  ux,
-  prototyping,
+  devops,
+  research,
+  product,
   javascript,
-  typescript,
   html,
   css,
-  reactjs,
-  redux,
-  tailwind,
-  nodejs,
   git,
   figma,
   docker,
   postgresql,
-  rubyrails,
-  graphql,
-  komikult,
-  leaderboard,
-  math,
-  movie,
   nyeusi,
-  space,
-  coverhunt,
-  dcc,
-  kelhel,
-  microverse,
+  naxa,
+  tu,
+  kec,
+  tm,
+  dfims,
+  dvs,
+  bipad,
+  python,
+  aws,
+  postgis,
+  mongo,
+  terraform,
+  kubernetes
 } from '../assets';
 
 export const navLinks = [
@@ -45,25 +42,51 @@ export const navLinks = [
 ];
 
 const services = [
-  {
-    title: 'Frontend Developer',
-    icon: frontend,
-  },
+
   {
     title: 'Backend Developer',
     icon: backend,
   },
   {
-    title: 'UI/UX Design',
-    icon: ux,
+    title: 'DevOps',
+    icon: devops,
   },
   {
-    title: 'Software Prototyping',
-    icon: prototyping,
+    title: 'Product Management',
+    icon: product,
+  },
+  {
+    title: 'Researcher',
+    icon: research,
   },
 ];
 
 const technologies = [
+
+  {
+    name: 'Python',
+    icon: python,
+  },
+  {
+    name: 'docker',
+    icon: docker,
+  },
+  {
+    name: 'AWS Services',
+    icon: aws,
+  },
+  {
+    name: 'Terraform',
+    icon: terraform,
+  },
+  {
+    name: 'MongoDB',
+    icon: mongo,
+  },
+  {
+    name: 'Postgis',
+    icon: postgis,
+  },
   {
     name: 'HTML 5',
     icon: html,
@@ -77,34 +100,6 @@ const technologies = [
     icon: javascript,
   },
   {
-    name: 'TypeScript',
-    icon: typescript,
-  },
-  {
-    name: 'React JS',
-    icon: reactjs,
-  },
-  {
-    name: 'Redux Toolkit',
-    icon: redux,
-  },
-  {
-    name: 'Tailwind CSS',
-    icon: tailwind,
-  },
-  {
-    name: 'Node JS',
-    icon: nodejs,
-  },
-  {
-    name: 'Rails',
-    icon: rubyrails,
-  },
-  {
-    name: 'graphql',
-    icon: graphql,
-  },
-  {
     name: 'postgresql',
     icon: postgresql,
   },
@@ -113,74 +108,47 @@ const technologies = [
     icon: git,
   },
   {
+    name: 'Kubernetes',
+    icon: kubernetes,
+  },
+  {
     name: 'figma',
     icon: figma,
   },
-  {
-    name: 'docker',
-    icon: docker,
-  },
+
 ];
 
 const experiences = [
   {
-    title: 'Front-End Developer',
-    company_name: 'Cover Hunt',
-    icon: coverhunt,
+    title: 'BE Computer Engineering',
+    company_name: 'Kathmandu Engineering College',
+    icon: kec,
     iconBg: '#333333',
-    date: 'Aug 2021 - Feb 2022',
+    date: '2014 - 2018',
   },
   {
-    title: 'Mentor (Volunteer)',
-    company_name: 'Microverse',
-    icon: microverse,
+    title: 'Masters in Computer Systems and Knowledge Engineering',
+    company_name: 'IOE Pulchowk Campus',
+    icon: tu,
     iconBg: '#333333',
-    date: 'Mar 2022 - May 2022',
+    date: '2020 - 2022',
   },
   {
-    title: 'Junior Software Engineer',
-    company_name: 'Kelhel',
-    icon: kelhel,
+    title: 'Backend Developer',
+    company_name: 'Naxa Pvt Ltd',
+    icon: naxa,
     iconBg: '#333333',
-    date: 'May 2022 - Oct 2022',
-  },
-  {
-    title: 'Full Stack Developer',
-    company_name: 'Diversity Cyber Council',
-    icon: dcc,
-    iconBg: '#333333',
-    date: 'Sep 2022 - Present',
+    date: '2021 - Present',
   },
 ];
 
 const projects = [
+
   {
     id: 'project-1',
-    name: 'KomiKult',
-    description: 'A comic characters list app that displays Marvel characters.',
-    tags: [
-      {
-        name: 'react',
-        color: 'blue-text-gradient',
-      },
-      {
-        name: 'mongodb',
-        color: 'green-text-gradient',
-      },
-      {
-        name: 'tailwind',
-        color: 'pink-text-gradient',
-      },
-    ],
-    image: komikult,
-    repo: 'https://github.com/shaqdeff/KomiKult',
-    demo: 'https://shaqdeff.github.io/KomiKult/',
-  },
-  {
-    id: 'project-2',
-    name: 'Leaderboard',
+    name: 'DFIMS - MOF',
     description:
-      'A leaderboard list app that displays scores submitted by different players.',
+      "Ministry of Finance, Nepal's IMS - Development Finance Information Management System (DFIMS) to enhance transparency and efficiency in managing development finance.",
     tags: [
       {
         name: 'react',
@@ -195,14 +163,38 @@ const projects = [
         color: 'pink-text-gradient',
       },
     ],
-    image: leaderboard,
-    repo: 'https://github.com/shaqdeff/Leaderboard',
-    demo: 'https://shaqdeff.github.io/Leaderboard/',
+    image: dfims,
+    repo: 'https://github.com/prabinoid',
+    demo: 'https://dfims.mof.gov.np/',
   },
+      
+  {
+    id: 'project-2',
+    name: 'Tasking Manager',
+    description: 'A collaborative mapping tool that helps coordinate volunteers for mapping projects, one task at a time.',
+    tags: [
+      {
+        name: 'react',
+        color: 'blue-text-gradient',
+      },
+      {
+        name: 'mongodb',
+        color: 'green-text-gradient',
+      },
+      {
+        name: 'tailwind',
+        color: 'pink-text-gradient',
+      },
+    ],
+    image: tm,
+    repo: 'https://github.com/hotosm/tasking-manager/',
+    demo: 'https://tasks.hotosm.org/',
+  },
+
   {
     id: 'project-3',
-    name: 'Math Magicians',
-    description: 'This is a single-page calculator app built with React',
+    name: 'DVS',
+    description: `DVS Nepal is a dynamic data visualization platform developed for the British Embassy Kathmandu to provide a comprehensive, portfolio-level view of UK-funded development programs in Nepal, enhancing strategic decision-making through interactive dashboards and evidence-based insights.`,
     tags: [
       {
         name: 'nextjs',
@@ -217,14 +209,15 @@ const projects = [
         color: 'pink-text-gradient',
       },
     ],
-    image: math,
-    repo: 'https://github.com/shaqdeff/Math-Magicians',
-    demo: 'https://inspiring-medovik-37d3b3.netlify.app/',
+    image: dvs,
+    repo: 'https://github.com/prabinoid',
+    demo: 'https://dvsnepal.org/',
   },
+
   {
     id: 'project-4',
-    name: 'Movie Metro',
-    description: `A single-page application that allows users to search for any movie or show's ratings and its details.`,
+    name: 'Building Exposure',
+    description: "Developed as a part of BIPAD portal, The Exposure platform by Nepal's National Disaster Risk Reduction and Management Authority (NDRRMA) offers detailed data on building exposure to assess and mitigate disaster risks across the country.",
     tags: [
       {
         name: 'nextjs',
@@ -239,15 +232,16 @@ const projects = [
         color: 'pink-text-gradient',
       },
     ],
-    image: movie,
-    repo: 'https://github.com/shaqdeff/Movie-Metro',
-    demo: 'https://movie-metro.netlify.app/',
+    image: bipad,
+    repo: 'https://github.com/prabinoid',
+    demo: 'https://exposure.ndrrma.gov.np/',
   },
+
   {
     id: 'project-5',
-    name: 'Nyeusi Fest Site',
+    name: 'Geonadir',
     description:
-      'This is a demo concert website for a music festival called Nyeusi.',
+      '​GeoNadir is a cloud-based drone mapping platform that enables environmental professionals to process, analyze, and share geospatial data collaboratively, facilitating ecosystem monitoring and informed decision-making.',
     tags: [
       {
         name: 'nextjs',
@@ -263,8 +257,8 @@ const projects = [
       },
     ],
     image: nyeusi,
-    repo: 'https://github.com/shaqdeff/Nyeusi-Fest-Site',
-    demo: 'https://shaqdeff.github.io/Nyeusi-Fest-Site/',
+    repo: 'https://github.com/prabinoid',
+    demo: 'https://geonadir.com/',
   },
 ];
 

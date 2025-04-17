@@ -36,13 +36,15 @@ const About = () => {
 
       <motion.p
         variants={fadeIn('', '', 0.1, 1)}
-        className="mt-4 text-taupe text-[18px] max-w-3xl leading-[30px]">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis
-        sapiente ipsum dolorum dicta eaque cumque inventore molestias, beatae ea
-        quaerat alias accusamus voluptas autem! Alias odit voluptates in totam
-        vitae dignissimos minus eaque culpa unde tempore dolore aperiam
-        obcaecati voluptatum aliquam corrupti, suscipit accusamus! Odit unde
-        veniam dolorum ipsum doloribus.
+        className="mt-4 text-taupe text-[18px] max-w-3xl leading-[30px] font-poppins">
+        <span className="text-eerieBlack font-bold">
+          🧑‍💻 Backend & GIS Dev | Cloud Survivor | DevOps-ish | PM When Cornered
+        </span>
+        <br className="sm:block hidden" />
+        I’ve spent the last 4+ years building web and GIS backends that (mostly) don’t crash, while simultaneously surviving the emotional rollercoaster of DevOps and cloud engineering. I have a love-hate relationship with AWS, GCP, and all things that claim to be "serverless" but come with 17 config files.
+        One minute I’m optimizing PostGIS queries like a wizard, next I’m in a dark corner whispering "why is this container restarting again?"
+        Also moonlight as a product manager when no one’s looking — translating vague business ideas into JIRA tickets and pretending I enjoy meetings.
+        Powered by caffeine, chaos, stackoverflow and of course a little AI touch here and there 🥲.
       </motion.p>
 
       <div className="mt-20 flex flex-wrap gap-10">

@@ -45,9 +45,10 @@ const Hero = () => {
                 Prabin
               </span>
             </h1>
-            <p className={`${styles.heroSubText} mt-2 text-eerieBlack`}>
-            Backend Dev with a <br className="sm:block hidden" />side hustle in 
-            breaking and fixing infrastructure.
+            <p
+              className="mt-2 text-battleGray font-inter font-light">
+              A Web Developer <br className="sm:block hidden" />
+              based in Kathmandu, Nepal
             </p>
           </div>
           <div

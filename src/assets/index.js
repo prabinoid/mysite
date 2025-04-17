@@ -11,8 +11,11 @@ import shaq from './personal/prabin.png';
 import backend from './icons/backend.png';
 import ux from './icons/ux.png';
 import frontend from './icons/frontend.png';
+import research from './icons/research.png';
 import prototyping from './icons/prototyping.png';
 import github from './icons/github.png';
+import gmail from './icons/mail.png';
+import facebook from './icons/facebook.png';
 import close from './icons/close.png';
 import download from './icons/download.png';
 import downloadHover from './icons/downloadHover.png';
@@ -22,6 +25,8 @@ import menu from './icons/menu.png';
 import resume from './icons/resume.png';
 import send from './icons/send.png';
 import sendHover from './icons/sendHover.png';
+import devops from './icons/devops.png';
+import product from './icons/product.png';
 
 import css from './tech/css.png';
 import docker from './tech/docker.png';
@@ -37,11 +42,20 @@ import typescript from './tech/typescript.png';
 import graphql from './tech/graphql.png';
 import postgresql from './tech/postgresql.png';
 import rubyrails from './tech/rubyrails.png';
+import python from './tech/python.png';
+import mongo from './tech/mongo.png';
+import postgis from './tech/postgis.png';
+import terraform from './tech/terraform.png';
+import aws from './tech/aws.png';
+import kubernetes from './tech/kubernetes.png';
 
 import coverhunt from './company/coverhunt.png';
 import dcc from './company/dcc.png';
 import kelhel from './company/kelhel.png';
 import microverse from './company/microverse.png';
+import tu from './company/tu.png';
+import kec from './company/kec.png';
+import naxa from './company/naxa.png';
 
 import komikult from './projects/komikult.png';
 import leaderboard from './projects/leaderboard.png';
@@ -49,6 +63,10 @@ import math from './projects/math-magicians.png';
 import movie from './projects/movie-metro.png';
 import nyeusi from './projects/nyeusi.png';
 import space from './projects/space-hub.png';
+import tm from './projects/tm.png';
+import dvs from './projects/dvs.png';
+import dfims from './projects/dfims.png';
+import bipad from './projects/bipad.png';
 
 export {
   bwmap,
@@ -62,6 +80,8 @@ export {
   ux,
   frontend,
   prototyping,
+  devops,
+  product,
   github,
   close,
   download,
@@ -96,4 +116,20 @@ export {
   dcc,
   kelhel,
   microverse,
+  kec,
+  tu,
+  naxa,
+  tm,
+  dvs,
+  bipad,
+  dfims,
+  aws,
+  mongo,
+  postgis,
+  python,
+  terraform,
+  kubernetes,
+  research,
+  gmail,
+  facebook
 };
