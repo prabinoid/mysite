@@ -2,11 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Prabin | Portfolio</title>
+    <title>Prabin Pathak | Backend &amp; GIS Developer</title>
+    <meta
+      name="description"
+      content="Backend & GIS developer based in Kathmandu, Nepal, building web and GIS backends and wrangling DevOps and cloud infrastructure." />
+    <meta name="author" content="Prabin Pathak" />
+    <meta property="og:title" content="Prabin Pathak | Backend & GIS Developer" />
+    <meta
+      property="og:description"
+      content="Backend & GIS developer based in Kathmandu, Nepal, building web and GIS backends and wrangling DevOps and cloud infrastructure." />
+    <meta property="og:type" content="website" />
+    <script>
+      // Apply the saved (or system) theme before first paint to avoid a flash.
+      (function () {
+        try {
+          var root = document.documentElement;
+          var stored = localStorage.getItem('theme');
+          var dark =
+            stored === 'dark' ||
+            ((!stored || stored === 'system') &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          root.classList.add(dark ? 'dark' : 'light');
+          root.style.colorScheme = dark ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-night">
+  <body class="min-h-screen font-sans">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

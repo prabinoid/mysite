@@ -1,5 +1,5 @@
 {
-  "name": "shaquille",
+  "name": "prabin-portfolio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,18 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emailjs/browser": "^3.11.0",
-    "@react-three/drei": "^9.66.1",
-    "@react-three/fiber": "^8.13.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@radix-ui/react-dialog": "^1.2.0",
+    "clsx": "^2.1.1",
     "framer-motion": "^10.12.5",
-    "maath": "^0.5.3",
+    "lucide-react": "^1.53.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.0",
-    "react-tilt": "^1.0.2",
-    "react-vertical-timeline-component": "^3.6.0",
-    "three": "^0.152.2",
-    "use": "^3.1.1"
+    "sonner": "^2.0.8",
+    "tailwind-merge": "^2.6.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
@@ -33,7 +31,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "postcss": "^8.4.23",
-    "tailwindcss": "^3.3.2",
+    "tailwindcss": "^3.4.19",
+    "tailwindcss-animate": "^1.0.7",
     "vite": "^4.3.2"
   }
 }

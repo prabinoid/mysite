@@ -1,47 +1,45 @@
-import { BrowserRouter } from 'react-router-dom';
+import { avatar } from './assets';
+import { personal } from './constants';
 import {
   About,
   Contact,
   Experience,
-  Hero,
-  Navbar,
-  Tech,
+  Footer,
+  Header,
+  Intro,
   Projects,
+  SectionDivider,
+  ThemeToggle,
+  Toaster,
 } from './components';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className="relative z-0">
-        <div>
-          <Navbar />
-          <Hero />
-        </div>
-
-        <div className="bg-about bg-cover bg-center bg-no-repeat">
-          <About />
-        </div>
-
-        <div className="bg-tech bg-cover bg-center bg-no-repeat pb-10">
-          <Tech />
-        </div>
-
-        <Projects />
-
-        <div
-          className="bg-experience bg-cover bg-center bg-no-repeat 
-            rounded-tl-[150px] rounded-br-[150px]">
-          <div
-            className="bg-experienceLight bg-cover bg-center 
-            bg-no-repeat rounded-tl-[150px] rounded-br-[130px]">
-            <Experience />
+    <>
+      <main id="main-content" className="overflow-x-clip">
+        <div className="container flex flex-col items-center">
+          <Header />
+          <div className="relative size-48 shrink-0 overflow-hidden rounded-full shadow-2xl">
+            <img
+              src={avatar}
+              alt={personal.name}
+              draggable={false}
+              decoding="async"
+              className="absolute inset-0 size-full origin-top scale-[1.3] object-cover"
+            />
           </div>
-        </div>
-        <div id="contact" className="relative z-0">
+          <Intro />
+          <SectionDivider />
+          <About />
+          <Projects />
+          <Experience />
           <Contact />
+          <Footer />
         </div>
-      </div>
-    </BrowserRouter>
+      </main>
+      <ThemeToggle className="fixed bottom-5 right-5 hidden md:bottom-8 md:right-8 md:flex" />
+      <Toaster />
+    </>
   );
 };
 

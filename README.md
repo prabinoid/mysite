@@ -1,100 +1,45 @@
-# Portfolio Template
+# Prabin Pathak's Portfolio
 
-https://github.com/shaqdeff/Portfolio-Template/assets/92020713/eed76a82-e59d-440b-a04c-a2dc00a508b7
-
-![portfolio-phone](https://github.com/shaqdeff/Portfolio-Template/assets/92020713/e41ed31c-50e5-40d3-a74f-9c0eb053fe7f)
-![portfolio-phone-3](https://github.com/shaqdeff/Portfolio-Template/assets/92020713/e8c23aa7-ac27-48fc-bf66-50ab00e3a64f)
-
-I created this portfolio to use as my own but ended up doing something else entirely. However, instead of keeping it buried, I decided to put it up here on GitHub as an open-source resource to help individuals to learn, adapt, and create their own portfolios. Feel free to customize and modify the theme and components to suit your personal style and branding preferences.
-
-## License and Attribution
-
-The code in this repository is released under the [MIT](https://github.com/shaqdeff/Portfolio-Template/blob/90213d4887074d1d29434f706afad3d12fa33f5f/MIT.md) License, which grants you the freedom to use, modify, and distribute the template as your own. However, if you choose to use the site's design largely unmodified, kindly credit me as the original designer of the site.
-
-All projects and experiences included in this portfolio are the result of my own efforts and creativity. Please refrain from presenting them as your own.
+A single-page portfolio: intro, about and tech stack, projects, a scroll-driven experience timeline, and a contact form. The light and dark themes follow the system setting, and a toggle lets visitors switch.
 
 ## Built With
 
-- React.js
-- Three.js
+- React 18 + Vite
+- Tailwind CSS
 - Framer Motion
-- TailwindCSS
-
-## Live Demo
-
-- Click [here](https://shaq-portfolio.netlify.app/) to view the live demo.
+- Radix UI Dialog, Sonner and Lucide icons
 
 ## Getting Started
 
-To get started with this portfolio template, follow these simple steps:
-
-### Prerequisites
-
-Make sure you have node `16.0.0` or higher and npm `9.0.0` or higher installed.
-
-### Setup
-
-- With git, clone the code to your machine, or download a ZIP of all the files directly.
-- [Download the ZIP file from this location](https://github.com/shaqdeff/Portfolio-Template/archive/refs/heads/main.zip) or run the following [git](https://git-scm.com/) command to clone the files to your machine:
-
-```
-git clone https://github.com/shaqdeff/Portfolio-Template.git
-```
-
-- Once the files are on your machine, open the **Portfolio-Template** folder in [Visual Studio Code](https://code.visualstudio.com/download).
-
-```
-cd Portfolio-Template && code .
-```
-
-## Install
-
-- After opening the files in Visual Studio Code, open the **VS Code** integrated terminal and run the following commands:
+Requires Node 18 or newer.
 
 ```
 npm install
+npm run dev       # http://localhost:5173
+npm run build     # production build in dist/
+npm run preview   # serve the production build
 ```
 
-This will install all the packages and dependencies used in the project.
+## Editing Content
 
-## Usage
+All personal content lives in `src/constants/index.js`: name, intro, social links, about text, tech stack, projects and experience.
 
-- Run the following command to start a local server:
+- **CV:** the "Download CV" button serves `public/PrabinPathakCV.pdf`. Replace that file to update it, or set `personal.cv` to `null` to hide the button.
+- **Avatar:** replace `src/assets/personal/avatar.webp` with a square head-and-shoulders photo (384×384 works well).
 
-```
-npm run dev
-```
+## Contact Form
 
-This will open up the project on a browser on `http://localhost:5173/`
+Messages are delivered to `personal.email` (prabinoid@gmail.com) through [FormSubmit](https://formsubmit.co/), with the visitor's address set as Reply-To. No account or API key is needed.
 
-## Build
+**One-time activation:** the first message sent through the form triggers an email from FormSubmit to that inbox with an "Activate Form" button. Click it once; until then, submissions are not delivered. If sending ever fails, visitors are offered an "Email me" link instead.
 
-- To create a production build:
+## Deployment
 
-```
-npm run build
-```
+Every push to `main` builds the site and publishes it to GitHub Pages via `.github/workflows/deploy.yml`, at https://prabinoid.github.io/mysite/.
 
-- To preview the site as it will appear once deployed:
+One-time setup:
 
-```
-npm run preview
-```
+1. In the repo, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. GitHub Pages on a free account only works for **public** repositories. A private repo needs a paid plan (GitHub Pro or above).
 
-## Authors
-
-👤 **Shaquille Ndunda**
-
-- GitHub: [@shaqdeff](https://github.com/shaqdeff)
-- Twitter: [@shaquillendunda](https://twitter.com/shaquillendunda)
-- LinkedIn: [Shaquille Ndunda](https://www.linkedin.com/in/shaquille-ndunda-b13a95107/)
-
-## Feedback and Contributions
-
-If you have any feedback, suggestions, or would like to contribute to this project, your involvement is highly valued. Feel free to open an [issue](../../issues/) or submit a pull request with your ideas and enhancements. Remember, this template is a starting point, and the true magic lies in making it your own. Enjoy the journey of creating a stunning portfolio that represents your unique talents and accomplishments!
-
-Happy coding and showcasing!
-
-## Show your support
-
-Give a ⭐️ if you like this project!
+Asset and CV paths are relative (`base: './'` in `vite.config.js`), so the same build also works at the root of a custom domain.

@@ -1,157 +1,348 @@
-import React, { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { SectionWrapper } from '../hoc';
-import { styles } from '../styles';
-import { github, pineapple, pineappleHover } from '../assets';
+import {
+  BookOpenText,
+  BriefcaseBusiness,
+  ExternalLink,
+  HeartHandshake,
+  Landmark,
+  RotateCcw,
+  Star,
+} from 'lucide-react';
 import { projects } from '../constants';
-import { fadeIn, textVariant, staggerContainer } from '../utils/motion';
+import { useSectionInView } from '../hooks/useSectionInView';
+import { cn } from '../utils/cn';
+import { Icons } from './Icons';
+import SectionHeading from './SectionHeading';
+import { buttonVariants } from './ui/button';
 
-const ProjectCard = ({
-  id,
-  name,
-  description,
-  image,
-  repo,
-  demo,
-  index,
-  active,
-  handleClick,
-}) => {
+const CATEGORIES = {
+  outsourcing: {
+    label: 'Outsourcing',
+    icon: BriefcaseBusiness,
+    className: 'bg-violet-500/10 text-violet-700 dark:bg-violet-400/10 dark:text-violet-300',
+  },
+  ngo: {
+    label: 'INGO/NGO',
+    icon: HeartHandshake,
+    className: 'bg-rose-500/10 text-rose-700 dark:bg-rose-400/10 dark:text-rose-300',
+  },
+  government: {
+    label: 'Government',
+    icon: Landmark,
+    className: 'bg-sky-500/10 text-sky-700 dark:bg-sky-400/10 dark:text-sky-300',
+  },
+};
+
+// How long a flipped card waits, once the pointer has left it, before turning back over.
+const FLIP_BACK_DELAY = 2000;
+
+const gridVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
+const linkButton = buttonVariants({ variant: 'outline', className: 'mr-2 px-5' });
+
+// Links open in a new tab without flipping the card underneath them.
+const stopPropagation = (event) => event.stopPropagation();
+
+const hasMoreBelow = (element) =>
+  element.scrollTop + element.clientHeight < element.scrollHeight - 4;
+
+const CategoryBadge = ({ category, className }) => {
+  const { label, icon: Icon, className: tone } = CATEGORIES[category];
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[11px] font-medium',
+        tone,
+        className,
+      )}>
+      <Icon className="size-3.5" aria-hidden="true" />
+      {label}
+    </span>
+  );
+};
+
+const ProjectLinks = ({ title, links }) => (
+  <>
+    {links.live && (
+      <a
+        href={links.live}
+        aria-label={`Visit ${title}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={stopPropagation}
+        className={linkButton}>
+        <ExternalLink className="size-5" />
+      </a>
+    )}
+    {links.github && (
+      <a
+        href={links.github}
+        aria-label="GitHub repository"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={stopPropagation}
+        className={linkButton}>
+        <Icons.githubOutline className="size-5" />
+      </a>
+    )}
+  </>
+);
+
+// Markdown-style links in the details text, e.g. [Right Place Geo](https://www.rightplacegeo.com/).
+const LINK_PATTERN = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+
+const DetailsText = ({ text }) => {
+  const parts = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(LINK_PATTERN)) {
+    parts.push(text.slice(lastIndex, match.index));
+    parts.push(
+      <a
+        key={match.index}
+        href={match[2]}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={stopPropagation}
+        className="text-brand font-medium underline-offset-4 hover:underline">
+        {match[1]}
+      </a>,
+    );
+    lastIndex = match.index + match[0].length;
+  }
+  parts.push(text.slice(lastIndex));
+  return <>{parts}</>;
+};
+
+const ProjectDetails = ({ details }) =>
+  Array.isArray(details) ? (
+    <ul className="marker:text-brand list-disc space-y-2 pl-4">
+      {details.map((point) => (
+        <li key={point}>
+          <DetailsText text={point} />
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div className="space-y-3">
+      {details.split(/\n\s*\n/).map((paragraph) => (
+        <p key={paragraph}>
+          <DetailsText text={paragraph} />
+        </p>
+      ))}
+    </div>
+  );
+
+const ProjectCard = ({ project }) => {
+  const { icon: Icon, title, description, details, tags, links, category, featured } = project;
+  const [flipped, setFlipped] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [keyboardFocused, setKeyboardFocused] = useState(false);
+  const [moreBelow, setMoreBelow] = useState(false);
+  const pointerType = useRef('mouse');
+  const focusAfterFlip = useRef(false);
+  const frontRef = useRef(null);
+  const backRef = useRef(null);
+  const detailsRef = useRef(null);
+  const showDetailsRef = useRef(null);
+
+  // Turn back to the front once the card has been left alone (no hover or keyboard focus)
+  // for a moment. Touch screens can't hover, so there the card waits for another tap.
+  useEffect(() => {
+    if (!flipped || hovered || keyboardFocused || pointerType.current === 'touch') return;
+    const timer = window.setTimeout(() => setFlipped(false), FLIP_BACK_DELAY);
+    return () => window.clearTimeout(timer);
+  }, [flipped, hovered, keyboardFocused]);
+
+  // Keep the hidden face out of the tab order and away from clicks. When the flip came from
+  // the keyboard, move focus to the face that is now showing.
+  useEffect(() => {
+    const shown = flipped ? backRef.current : frontRef.current;
+    const hidden = flipped ? frontRef.current : backRef.current;
+    shown.inert = false;
+    if (flipped) {
+      detailsRef.current.scrollTop = 0;
+      setMoreBelow(hasMoreBelow(detailsRef.current));
+    }
+    if (focusAfterFlip.current) {
+      focusAfterFlip.current = false;
+      (flipped ? detailsRef : showDetailsRef).current.focus({ preventScroll: true });
+    }
+    hidden.inert = true;
+  }, [flipped]);
+
+  const handleClick = (event) => {
+    // Selecting text on the back shouldn't flip the card.
+    if (window.getSelection()?.toString()) return;
+    // Keyboard-activated buttons report zero clicks.
+    focusAfterFlip.current = event.detail === 0;
+    setFlipped((value) => !value);
+  };
+
+  const face = cn(
+    'backface-hidden rounded-3xl bg-secondary',
+    featured && 'ring-1 ring-brand/40',
+  );
+
   return (
     <motion.div
-      variants={fadeIn('right', 'spring', index * 0.5, 0.75)}
-      className={`relative ${
-        active === id ? 'lg:flex-[3.5] flex-[10]' : 'lg:flex-[0.5] flex-[2]'
-      } flex items-center justify-center min-w-[170px] 
-      h-[420px] cursor-pointer card-shadow`}
-      onClick={() => handleClick(id)}>
+      variants={cardVariants}
+      whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
+      className={cn(
+        'perspective-1200 relative w-full cursor-pointer rounded-3xl transition-shadow hover:shadow-lg',
+        featured && 'shadow-brand/20 shadow-lg',
+      )}
+      onClick={handleClick}
+      onPointerDown={(event) => {
+        pointerType.current = event.pointerType;
+      }}
+      onPointerEnter={(event) => event.pointerType !== 'touch' && setHovered(true)}
+      onPointerLeave={(event) => event.pointerType !== 'touch' && setHovered(false)}
+      onFocus={(event) => event.target.matches(':focus-visible') && setKeyboardFocused(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setKeyboardFocused(false);
+      }}>
       <div
-        className="absolute top-0 left-0 z-10 bg-jetLight 
-      h-full w-full opacity-[0.5] rounded-[24px]"></div>
-
-      <img
-        src={image}
-        alt={name}
-        className="absolute w-full h-full object-cover rounded-[24px]"
-      />
-
-      {active !== id ? (
-        <div className="flex items-center justify-start pr-[4.5rem]">
-          <h3
-            className="font-extrabold font-beckman uppercase w-[200px] h-[30px] 
-        whitespace-nowrap sm:text-[27px] text-[18px] text-timberWolf tracking-[1px]
-        absolute z-0 lg:bottom-[7rem] lg:rotate-[-90deg] lg:origin-[0,0]
-        leading-none z-20">
-            {name}
-          </h3>
-        </div>
-      ) : (
-        <>
+        className={cn(
+          'preserve-3d relative h-full transition-transform duration-700 ease-in-out motion-reduce:transition-none',
+          flipped && 'rotate-y-180',
+        )}>
+        <div
+          ref={frontRef}
+          className={cn(
+            face,
+            'relative flex h-full flex-col items-center p-5 text-center',
+            featured && 'from-brand/15 via-secondary to-secondary bg-gradient-to-b via-40%',
+            flipped && 'pointer-events-none',
+          )}>
+          <div className="flex w-full items-center justify-between gap-2">
+            {featured ? (
+              <span className="bg-brand text-brand-foreground inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-mono text-[11px] font-semibold shadow-sm">
+                <Star className="size-3.5 fill-current" aria-hidden="true" />
+                Featured
+              </span>
+            ) : (
+              <span />
+            )}
+            <CategoryBadge category={category} />
+          </div>
           <div
-            className="absolute bottom-0 p-8 justify-start w-full 
-            flex-col bg-[rgba(122,122,122,0.5)] rounded-b-[24px] z-20">
-            <div className="absolute inset-0 flex justify-end m-3">
-              <div
-                onClick={() => window.open(repo, '_blank')}
-                className="bg-night sm:w-11 sm:h-11 w-10 h-10 rounded-full 
-                  flex justify-center items-center cursor-pointer
-                  sm:opacity-[0.9] opacity-[0.8]">
-                <img
-                  src={github}
-                  alt="source code"
-                  className="w-4/5 h-4/5 object-contain"
-                />
-              </div>
-            </div>
-
-            <h2
-              className="font-bold sm:text-[32px] text-[24px] 
-              text-timberWolf uppercase font-beckman sm:mt-0 -mt-[1rem]">
-              {name}
-            </h2>
-            <p
-              className="text-silver sm:text-[14px] text-[12px] 
-              max-w-3xl sm:leading-[24px] leading-[18px]
-              font-poppins tracking-[1px]">
-              {description}
-            </p>
+            className={cn(
+              'mt-1 w-fit rounded-full p-4',
+              featured ? 'bg-brand/15 text-brand' : 'bg-muted',
+            )}>
+            <Icon className="size-8" aria-hidden="true" />
+          </div>
+          <h3 className="my-2 text-lg font-medium">{title}</h3>
+          <p className="text-muted-foreground line-clamp-3 text-sm">{description}</p>
+          <div className="my-3 flex flex-wrap justify-center gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-muted hover:bg-brand hover:text-brand-foreground rounded-full px-3 py-1 font-mono text-sm transition-colors">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div className="mt-auto flex pt-2">
+            <ProjectLinks title={title} links={links} />
             <button
-              className="live-demo flex justify-between 
-              sm:text-[16px] text-[14px] text-timberWolf 
-              font-bold font-beckman items-center py-5 pl-2 pr-3 
-              whitespace-nowrap gap-1 sm:w-[138px] sm:h-[50px] 
-              w-[125px] h-[46px] rounded-[10px] glassmorphism 
-              sm:mt-[22px] mt-[16px] hover:bg-battleGray 
-              hover:text-eerieBlack transition duration-[0.2s] 
-              ease-in-out"
-              onClick={() => window.open(demo, '_blank')}
-              onMouseOver={() => {
-                document
-                  .querySelector('.btn-icon')
-                  .setAttribute('src', pineappleHover);
-              }}
-              onMouseOut={() => {
-                document
-                  .querySelector('.btn-icon')
-                  .setAttribute('src', pineapple);
-              }}>
-              <img
-                src={pineapple}
-                alt="pineapple"
-                className="btn-icon sm:w-[34px] sm:h-[34px] 
-                  w-[30px] h-[30px] object-contain"
-              />
-              LIVE DEMO
+              ref={showDetailsRef}
+              type="button"
+              aria-label={`Show details for ${title}`}
+              title="Show details"
+              className={linkButton}>
+              <BookOpenText className="size-5" />
             </button>
           </div>
-        </>
-      )}
+        </div>
+
+        <div
+          ref={backRef}
+          className={cn(
+            face,
+            'rotate-y-180 absolute inset-0 flex flex-col p-5 text-left',
+            !flipped && 'pointer-events-none',
+          )}>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-brand font-mono text-xs font-medium uppercase tracking-widest">
+                About the project
+              </p>
+              <h3 className="mt-1 text-lg font-medium leading-snug">{title}</h3>
+            </div>
+            <CategoryBadge category={category} className="shrink-0" />
+          </div>
+          <div className="relative mt-3 min-h-0 flex-1">
+            <div
+              ref={detailsRef}
+              tabIndex={0}
+              role="region"
+              aria-label={`${title} details`}
+              onScroll={(event) => setMoreBelow(hasMoreBelow(event.currentTarget))}
+              className="text-muted-foreground h-full overflow-y-auto overscroll-contain rounded-md pr-2 text-sm leading-relaxed [scrollbar-width:thin]">
+              <ProjectDetails details={details} />
+            </div>
+            {/* Fades the bottom edge while there is more to scroll. */}
+            <div
+              aria-hidden="true"
+              className={cn(
+                'from-secondary pointer-events-none absolute bottom-0 left-0 right-3 h-10 bg-gradient-to-t to-transparent transition-opacity',
+                moreBelow ? 'opacity-100' : 'opacity-0',
+              )}
+            />
+          </div>
+          <div className="flex items-center pt-4">
+            <ProjectLinks title={title} links={links} />
+            <button
+              type="button"
+              aria-label={`Show summary of ${title}`}
+              title="Back to summary"
+              className={cn(linkButton, 'ml-auto mr-0')}>
+              <RotateCcw className="size-5" />
+            </button>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 };
 
 const Projects = () => {
-  const [active, setActive] = useState('project-2');
+  const { ref } = useSectionInView('Projects');
 
   return (
-    <div className="-mt-[6rem]">
-      <motion.div variants={textVariant()}>
-        <p className={`${styles.sectionSubText} `}>Case Studies</p>
-        <h2 className={`${styles.sectionHeadTextLight}`}>Projects.</h2>
-      </motion.div>
-
-      <div className="w-full flex">
-        <motion.p
-          variants={fadeIn('', '', 0.1, 1)}
-          className="mt-4 text-taupe text-[18px] max-w-3xl leading-[30px]">
-          These projects demonstrate my expertise with practical examples of
-          some of my work, including brief descriptions and links to code
-          repositories and live demos. They showcase my ability to tackle
-          intricate challenges, adapt to various technologies, and efficiently
-          oversee projects.
-        </motion.p>
-      </div>
-
+    <section ref={ref} id="projects" className="my-6 scroll-mt-28 sm:my-8">
       <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, amount: 0.25 }}
-        className={`${styles.innerWidth} mx-auto flex flex-col`}>
-        <div className="mt-[50px] flex lg:flex-row flex-col min-h-[70vh] gap-5">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              index={index}
-              {...project}
-              active={active}
-              handleClick={setActive}
-            />
-          ))}
-        </div>
+        initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.175 }}
+        viewport={{ once: true }}>
+        <SectionHeading
+          heading="My Projects"
+          content="Practical examples of some of my work. Click a card to read more about it."
+        />
       </motion.div>
-    </div>
+      <motion.div
+        className="grid grid-cols-1 justify-center gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        variants={gridVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-100px' }}>
+        {projects.map((project) => (
+          <ProjectCard key={project.title} project={project} />
+        ))}
+      </motion.div>
+    </section>
   );
 };
 
-export default SectionWrapper(Projects, 'projects');
+export default Projects;

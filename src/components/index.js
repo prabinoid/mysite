@@ -1,10 +1,23 @@
-import { BallCanvas } from './canvas';
-import Hero from './Hero';
-import Navbar from './Navbar';
 import About from './About';
-import Tech from './Tech';
-import Experience from './Experience';
-import Projects from './Projects';
 import Contact from './Contact';
+import Experience from './Experience';
+import Footer from './Footer';
+import Header from './Header';
+import Intro from './Intro';
+import Projects from './Projects';
+import SectionDivider from './SectionDivider';
+import ThemeToggle from './ThemeToggle';
+import Toaster from './Toaster';
 
-export { Hero, Navbar, About, Tech, Experience, Projects, Contact, BallCanvas };
+export {
+  About,
+  Contact,
+  Experience,
+  Footer,
+  Header,
+  Intro,
+  Projects,
+  SectionDivider,
+  ThemeToggle,
+  Toaster,
+};

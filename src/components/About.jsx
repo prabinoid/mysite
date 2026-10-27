@@ -1,59 +1,43 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { styles } from '../styles';
-import { services } from '../constants';
-import { fadeIn, textVariant } from '../utils/motion';
-import { SectionWrapper } from '../hoc';
-
-const ServiceCard = ({ index, title, icon }) => {
-  return (
-    <motion.div
-      variants={fadeIn('right', 'spring', 0.5 * index, 0.75)}
-      className="xs:w-[250px] w-full card-gradient p-[1px] rounded-[20px] shadow-card">
-      <div
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className="bg-jetLight rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
-        <img src={icon} alt={title} className="w-16 h-16 object-contain" />
-        <h3 className="text-taupe text-[18px] font-bold text-center">
-          {title}
-        </h3>
-      </div>
-    </motion.div>
-  );
-};
+import { about } from '../constants';
+import { useSectionInView } from '../hooks/useSectionInView';
+import SectionHeading from './SectionHeading';
+import TechStack from './TechStack';
 
 const About = () => {
+  const { ref } = useSectionInView('About');
+
   return (
-    <div className="-mt-[6rem]">
-      <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Introduction</p>
-        <h2 className={styles.sectionHeadText}>Overview.</h2>
-      </motion.div>
-
-      <motion.p
-        variants={fadeIn('', '', 0.1, 1)}
-        className="mt-4 text-taupe text-[18px] max-w-3xl leading-[30px] font-poppins">
-        <span className="text-eerieBlack font-bold">
-          🧑‍💻 Backend & GIS Dev | Cloud Survivor | DevOps-ish | PM When Cornered
-        </span>
-        <br className="sm:block hidden" />
-        I’ve spent the last 4+ years building web and GIS backends that (mostly) don’t crash, while simultaneously surviving the emotional rollercoaster of DevOps and cloud engineering. I have a love-hate relationship with AWS, GCP, and all things that claim to be "serverless" but come with 17 config files.
-        One minute I’m optimizing PostGIS queries like a wizard, next I’m in a dark corner whispering "why is this container restarting again?"
-        Also moonlight as a product manager when no one’s looking — translating vague business ideas into JIRA tickets and pretending I enjoy meetings.
-        Powered by caffeine, chaos, stackoverflow and of course a little AI touch here and there 🥲.
-      </motion.p>
-
-      <div className="mt-20 flex flex-wrap gap-10">
-        {services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} {...service} />
+    <motion.section
+      ref={ref}
+      id="about"
+      className="mb-6 mt-3 flex w-full scroll-mt-28 flex-col items-center sm:mb-8"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.175 }}>
+      <SectionHeading heading="About Me" />
+      <div className="max-w-2xl text-center leading-7">
+        {about.paragraphs.map((paragraph, index) => (
+          <p key={index} className={index < about.paragraphs.length - 1 ? 'mb-4' : undefined}>
+            {paragraph}
+          </p>
         ))}
+        <div className="mt-6">
+          <h3 className="text-muted-foreground mb-3 font-mono text-xs uppercase tracking-widest">
+            Primary interests
+          </h3>
+          <ul className="flex flex-wrap justify-center gap-2" aria-label="Primary interests">
+            {about.interests.map((interest) => (
+              <li key={interest} className="bg-muted rounded-full px-3 py-1 text-sm">
+                {interest}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+      <TechStack />
+    </motion.section>
   );
 };
 
-export default SectionWrapper(About, 'about');
+export default About;
