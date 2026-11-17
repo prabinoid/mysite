@@ -12,26 +12,35 @@ const Intro = () => {
       ref={ref}
       id="home"
       className="mb-3 mt-5 flex scroll-mt-96 flex-col items-center gap-4 text-center sm:mt-8">
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: 'tween', duration: 0.2 }}
-        className="bg-muted inline-flex items-center gap-2 rounded px-3 py-1 text-sm font-medium">
-        <span aria-hidden="true" className="bg-brand size-2 animate-pulse rounded-full" />
-        {personal.status}
-      </motion.div>
+      {personal.status && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: 'tween', duration: 0.2 }}
+          className="bg-muted inline-flex items-center gap-2 rounded px-3 py-1 text-sm font-medium">
+          <span aria-hidden="true" className="bg-brand size-2 animate-pulse rounded-full" />
+          {personal.status}
+        </motion.div>
+      )}
       <motion.h1
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-bold leading-tight tracking-tighter sm:text-4xl">
-        {personal.name} - {personal.role}
+        className="text-4xl font-bold leading-tight tracking-tighter sm:text-5xl">
+        {personal.name}
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="text-muted-foreground max-w-lg">
-        {personal.intro}
+        className="text-muted-foreground -mt-2 max-w-lg text-lg">
+        {/* Each half stays whole, so narrow screens break the line between them. */}
+        <span className="text-foreground whitespace-nowrap font-medium">{personal.role}</span>
+        {personal.location && (
+          <>
+            {' '}
+            <span className="whitespace-nowrap">based in {personal.location}</span>
+          </>
+        )}
       </motion.p>
       <motion.div
         initial={{ opacity: 0, y: 100 }}

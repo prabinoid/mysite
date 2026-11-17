@@ -6,10 +6,10 @@ import { Icons } from '../components/Icons';
 export const personal = {
   name: 'Prabin Pathak',
   role: 'Backend & GIS Developer',
-  // Shown next to the pulsing dot above your name.
-  status: 'Currently at NAXA',
-  intro:
-    'A web developer based in Kathmandu, Nepal. Cloud survivor, DevOps-ish, and PM when cornered.',
+  // Shown next to the pulsing dot above your name. Set to null to hide it.
+  status: null,
+  // Shown below your name: "<role> based in <location>".
+  location: 'Kathmandu, Nepal',
   email: 'prabinoid@gmail.com',
   github: 'https://github.com/prabinoid',
   // The file in /public behind the "Download CV" button. Set to null to hide the button.
